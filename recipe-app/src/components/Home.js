@@ -1,3 +1,4 @@
+// src/components/Home.js
 import React, { useState } from 'react';
 import { recipes as recipesData } from '../data';
 import RecipeCard from './RecipeCard';
@@ -17,31 +18,39 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('');
 
-  const recipes = Array.isArray(recipesData) ? recipesData : [];
+  const userRecipes = JSON.parse(localStorage.getItem('recipes') || '[]');
+  const recipes = [...recipesData, ...userRecipes];
 
   const filtered = recipes.filter(r =>
     r.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (selectedType ? r.type === selectedType : true)
   );
 
-  const allTypes = [...new Set(recipes.map(r => r.type))];
+  const allTypes = [...new Set(recipes.map(r => r.type).filter(Boolean))];
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>Recipe Search</h2>
-      <input
-        placeholder="Search by name..."
-        value={searchTerm}
-        onChange={e => setSearchTerm(e.target.value)}
-      />
-      <select value={selectedType} onChange={e => setSelectedType(e.target.value)}>
-        <option value="">All Types</option>
-        {allTypes.map(type => (
-          <option key={type} value={type}>{type}</option>
-        ))}
-      </select>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+        <h2 style={{ margin: 0 }}>Recipe Search</h2>
+        {/* Add button is in Navbar; intentionally no extra button here */}
+      </div>
 
-      <div style={{ marginTop: 20 }}>
+      <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
+        <input
+          placeholder="Search by name..."
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          style={{ padding: 8, flex: 1 }}
+        />
+        <select value={selectedType} onChange={e => setSelectedType(e.target.value)} style={{ padding: 8 }}>
+          <option value="">All Types</option>
+          {allTypes.map(type => (
+            <option key={type} value={type}>{type}</option>
+          ))}
+        </select>
+      </div>
+
+      <div style={{ marginTop: 10 }}>
         {filtered.length === 0 ? (
           <p>🚫 No recipes found.</p>
         ) : (
@@ -59,7 +68,7 @@ function Home() {
                 style={{
                   flex: "1 0 18%",
                   maxWidth: "18%",
-                  minWidth: "200px",
+                  minWidth: "220px",
                   boxSizing: "border-box",
                   border: `3px solid ${getTypeColor(recipe.type)}`,
                   borderRadius: "10px",
