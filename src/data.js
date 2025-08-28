@@ -14,10 +14,10 @@ export const recipes = [
       "200g spaghetti",
       "2 cups tomato sauce",
       "1 tbsp olive oil",
-      "Salt and pepper to taste"
+      "Salt & pepper to taste"
     ],
     steps: [
-      "Boil spaghetti in salted water for 8-10 minutes.",
+      "Boil spaghetti in salted water for 8–10 minutes.",
       "Drain and toss with olive oil.",
       "Add tomato sauce and simmer for 5 minutes.",
       "Serve hot."
@@ -42,9 +42,9 @@ export const recipes = [
     ],
     steps: [
       "Cook sushi rice and season with rice vinegar.",
-      "Place rice on nori sheet.",
-      "Add fish and vegetables.",
-      "Roll tightly and slice.",
+      "Spread rice evenly on a nori sheet.",
+      "Add fish and vegetables in the center.",
+      "Roll tightly using a bamboo mat and slice.",
       "Serve with soy sauce and wasabi."
     ]
   },
@@ -180,7 +180,7 @@ export const recipes = [
       "Oil"
     ],
     steps: [
-      "Make curry base with onions, tomatoes, and spices.",
+      "Prepare curry base with onions, tomatoes, and spices.",
       "Add boiled eggs and simmer for 5 minutes.",
       "Serve with rice or roti."
     ]
@@ -203,7 +203,7 @@ export const recipes = [
     ],
     steps: [
       "Season steak with salt & pepper.",
-      "Sear in hot pan with butter & garlic.",
+      "Sear in a hot pan with butter & garlic.",
       "Cook to desired doneness.",
       "Rest for 5 minutes before serving."
     ]
@@ -271,7 +271,7 @@ export const recipes = [
       "Toppings of choice"
     ],
     steps: [
-      "Grate and cook cauliflower, then press out water.",
+      "Grate and cook cauliflower, then press out excess water.",
       "Mix with cheese to form dough.",
       "Bake crust, add toppings, and bake again."
     ]

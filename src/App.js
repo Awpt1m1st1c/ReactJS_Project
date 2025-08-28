@@ -1,25 +1,50 @@
 // src/App.js
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import AuthPage from './components/AuthPage';
 import Home from './components/Home';
 import RecipeDetails from './components/RecipeDetails';
-import AddRecipe from './components/AddRecipe'; // 👈 NEW
+import AddRecipe from './components/AddRecipe';
+import Navbar from './components/Navbar';
+import { ThemeProvider } from './ThemeContext';
 
-function App() {
+function AppRoutes() {
+  const location = useLocation();
   const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+  const onAuth = location.pathname === '/';
 
-  return (
-    <BrowserRouter>
+  useEffect(() => {
+    if (onAuth) {
+      document.body.classList.remove('light', 'dark');
+    }
+  }, [onAuth]);
+
+  if (onAuth) {
+    return (
       <Routes>
         <Route path="/" element={<AuthPage />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <ThemeProvider>
+      <Navbar />
+      <Routes>
         <Route path="/home" element={isLoggedIn ? <Home /> : <Navigate to="/" />} />
         <Route path="/recipe/:id" element={isLoggedIn ? <RecipeDetails /> : <Navigate to="/" />} />
-        <Route path="/add-recipe" element={isLoggedIn ? <AddRecipe /> : <Navigate to="/" />} /> {/* 👈 NEW */}
-        <Route path="*" element={<h2>404 Not Found</h2>} />
+        <Route path="/add-recipe" element={isLoggedIn ? <AddRecipe /> : <Navigate to="/" />} />
+        <Route path="*" element={<Navigate to={isLoggedIn ? "/home" : "/"} />} />
       </Routes>
-    </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
+}

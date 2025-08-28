@@ -31,13 +31,11 @@ function AddRecipe() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Parse ingredients (one per line or comma-separated)
     const ingredients = form.ingredients
       .split(/\r?\n|,/)
       .map((s) => s.trim())
       .filter(Boolean);
 
-    // Parse steps (one per line)
     const steps = form.steps
       .split(/\r?\n/)
       .map((s) => s.trim())
@@ -78,84 +76,94 @@ function AddRecipe() {
   );
 
   return (
-    <div style={{ maxWidth: 700, margin: "30px auto", padding: 24 }}>
-      <h2 style={{ marginBottom: 20 }}>Add a New Recipe</h2>
-      <form onSubmit={handleSubmit}>
-        {field({ name: "title", placeholder: "Recipe Title *", value: form.title, required: true })}
-        {field({ name: "cuisine", placeholder: "Cuisine (e.g., Indian, Italian) *", value: form.cuisine, required: true })}
-
-        <div style={{ display: "flex", gap: 12 }}>
-          <select
-            name="type"
-            value={form.type}
-            onChange={handleChange}
-            style={{ flex: 1, padding: 10, marginBottom: 12 }}
-          >
-            <option value="">Type</option>
-            {TYPES.map((t) => (
-              <option key={t} value={t}>{t}</option>
-            ))}
-          </select>
-
-          <select
-            name="difficulty"
-            value={form.difficulty}
-            onChange={handleChange}
-            style={{ flex: 1, padding: 10, marginBottom: 12 }}
-          >
-            <option value="">Difficulty</option>
-            {DIFFICULTIES.map((d) => (
-              <option key={d} value={d}>{d}</option>
-            ))}
-          </select>
-        </div>
-
-        <div style={{ display: "flex", gap: 12 }}>
-          {field({ name: "tasteRating", type: "number", min: 0, max: 5, step: 0.5, placeholder: "Taste Rating (0–5)", value: form.tasteRating })}
-          {field({ name: "healthRating", type: "number", min: 0, max: 5, step: 0.5, placeholder: "Health Rating (0–5)", value: form.healthRating })}
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
-          {field({ name: "calories", placeholder: "Calories (e.g., 350 kcal)", value: form.calories })}
-          {field({ name: "protein", placeholder: "Protein (e.g., 12g)", value: form.protein })}
-          {field({ name: "fat", placeholder: "Fat (e.g., 10g)", value: form.fat })}
-          {field({ name: "carbs", placeholder: "Carbs (e.g., 55g)", value: form.carbs })}
-        </div>
-
-        {field({ name: "video", placeholder: "YouTube URL (optional)", value: form.video })}
-
-        <textarea
-          name="ingredients"
-          placeholder={"Ingredients (one per line)\nExample:\n200g spaghetti\n2 cups tomato sauce\n1 tbsp olive oil"}
-          value={form.ingredients}
-          onChange={handleChange}
-          style={{ width: "100%", padding: 10, height: 120, marginBottom: 12, boxSizing: "border-box" }}
-        />
-
-        <textarea
-          name="steps"
-          placeholder={"Steps (one per line)\nExample:\nBoil pasta\nMake the sauce\nCombine & serve"}
-          value={form.steps}
-          onChange={handleChange}
-          style={{ width: "100%", padding: 10, height: 150, marginBottom: 12, boxSizing: "border-box" }}
-        />
-
+    <div style={{ maxWidth: 800, margin: "30px auto", padding: 24 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
         <button
-          type="submit"
+          onClick={() => navigate(-1)}
           style={{
-            width: "100%",
-            padding: 12,
-            background: "#2563eb",
-            color: "#fff",
-            border: "none",
+            background: "transparent",
+            border: "1px solid #e5e7eb",
+            padding: "8px 12px",
             borderRadius: 8,
-            fontWeight: 600,
             cursor: "pointer"
           }}
         >
-          Add Recipe
+          ← Back
         </button>
-      </form>
+        <h2 style={{ margin: 0 }}>Add a New Recipe</h2>
+        <div style={{ width: 80 }} />
+      </div>
+
+      <div className="recipe-details">
+        <form onSubmit={handleSubmit}>
+          {field({ name: "title", placeholder: "Recipe Title *", value: form.title, required: true })}
+          {field({ name: "cuisine", placeholder: "Cuisine (e.g., Indian, Italian) *", value: form.cuisine, required: true })}
+
+          <div style={{ display: "flex", gap: 12 }}>
+            <select
+              name="type"
+              value={form.type}
+              onChange={handleChange}
+              style={{ flex: 1, padding: 10, marginBottom: 12 }}
+            >
+              <option value="">Type</option>
+              {TYPES.map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+
+            <select
+              name="difficulty"
+              value={form.difficulty}
+              onChange={handleChange}
+              style={{ flex: 1, padding: 10, marginBottom: 12 }}
+            >
+              <option value="">Difficulty</option>
+              {DIFFICULTIES.map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ display: "flex", gap: 12 }}>
+            {field({ name: "tasteRating", type: "number", min: 0, max: 5, step: 0.5, placeholder: "Taste Rating (0–5)", value: form.tasteRating })}
+            {field({ name: "healthRating", type: "number", min: 0, max: 5, step: 0.5, placeholder: "Health Rating (0–5)", value: form.healthRating })}
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+            {field({ name: "calories", placeholder: "Calories (e.g., 350 kcal)", value: form.calories })}
+            {field({ name: "protein", placeholder: "Protein (e.g., 12g)", value: form.protein })}
+            {field({ name: "fat", placeholder: "Fat (e.g., 10g)", value: form.fat })}
+            {field({ name: "carbs", placeholder: "Carbs (e.g., 55g)", value: form.carbs })}
+          </div>
+
+          {field({ name: "video", placeholder: "YouTube URL (watch/share/embed) — optional", value: form.video })}
+
+          <textarea
+            name="ingredients"
+            placeholder={"Ingredients (one per line)\nExample:\n200g spaghetti\n2 cups tomato sauce\n1 tbsp olive oil"}
+            value={form.ingredients}
+            onChange={handleChange}
+            style={{ width: "100%", padding: 10, height: 120, marginBottom: 12, boxSizing: "border-box" }}
+          />
+
+          <textarea
+            name="steps"
+            placeholder={"Steps (one per line)\nExample:\nBoil pasta\nMake the sauce\nCombine & serve"}
+            value={form.steps}
+            onChange={handleChange}
+            style={{ width: "100%", padding: 10, height: 150, marginBottom: 12, boxSizing: "border-box" }}
+          />
+
+          <button
+            type="submit"
+            className="primary"
+            style={{ width: "100%", padding: 12, borderRadius: 8 }}
+          >
+            Add Recipe
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

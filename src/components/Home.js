@@ -1,6 +1,5 @@
 // src/components/Home.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { recipes as recipesData } from '../data';
 import RecipeCard from './RecipeCard';
 
@@ -19,7 +18,6 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('');
 
-  // Always read latest user-added recipes from localStorage
   const userRecipes = JSON.parse(localStorage.getItem('recipes') || '[]');
   const recipes = [...recipesData, ...userRecipes];
 
@@ -34,21 +32,7 @@ function Home() {
     <div style={{ padding: 20 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
         <h2 style={{ margin: 0 }}>Recipe Search</h2>
-        <Link to="/add-recipe">
-          <button
-            style={{
-              padding: "8px 12px",
-              borderRadius: 6,
-              border: "none",
-              background: "#22c55e",
-              color: "#fff",
-              fontWeight: 600,
-              cursor: "pointer"
-            }}
-          >
-            + Add Recipe
-          </button>
-        </Link>
+        {/* Add button is in Navbar; intentionally no extra button here */}
       </div>
 
       <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
