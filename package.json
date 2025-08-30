@@ -1,0 +1,25 @@
+{
+  "name": "reactjs_project",
+  "version": "1.0.0",
+  "description": "Recipe app built using React.js.",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Awpt1m1st1c/ReactJS_Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Awpt1m1st1c/ReactJS_Project/issues"
+  },
+  "homepage": "https://github.com/Awpt1m1st1c/ReactJS_Project#readme",
+  "dependencies": {
+    "react-scripts": "^5.0.1"
+  }
+}
