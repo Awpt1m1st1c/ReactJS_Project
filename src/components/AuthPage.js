@@ -1,24 +1,57 @@
 // src/components/AuthPage.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { login, register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const prev = document.body.className;
     document.body.classList.remove('light', 'dark');
+    if (isAuthenticated) {
+      navigate('/home');
+    }
     return () => { document.body.className = prev; };
-  }, []);
+  }, [isAuthenticated, navigate]);
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem('loggedIn', 'true');
-    navigate('/home');
+    setError('');
+    setLoading(true);
+
+    try {
+      let result;
+      if (isLogin) {
+        result = await login(form.email, form.password);
+      } else {
+        if (!form.name && !isLogin) {
+          setError('Please enter your name');
+          setLoading(false);
+          return;
+        }
+        result = await register(form.email, form.password, form.name);
+      }
+
+      if (result && !result.success) {
+        setError(result.error || 'An error occurred');
+      } else if (result && result.success) {
+        navigate('/home');
+      }
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'Failed to authenticate. Please try again.';
+      setError(errorMessage);
+      console.error('Auth error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,12 +80,30 @@ export default function AuthPage() {
           {isLogin ? 'Login to continue' : 'Sign up to get started'}
         </p>
         <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Your Name"
+              required={!isLogin}
+              style={{
+                width: '100%',
+                padding: 12,
+                borderRadius: 8,
+                border: '1px solid #e5e7eb',
+                marginBottom: 12,
+                boxSizing: 'border-box'
+              }}
+            />
+          )}
           <input
+            type="email"
             name="email"
             value={form.email}
             onChange={handleChange}
             placeholder="Email"
-            type="email"
             required
             style={{
               width: '100%',
@@ -64,12 +115,13 @@ export default function AuthPage() {
             }}
           />
           <input
+            type="password"
             name="password"
             value={form.password}
             onChange={handleChange}
             placeholder="Password"
-            type="password"
             required
+            minLength="6"
             style={{
               width: '100%',
               padding: 12,
